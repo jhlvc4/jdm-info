@@ -62,6 +62,19 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.delete('/deletar-usuario/:id', async (req, res) => {
+    try{
+        await prisma.user.delete({
+            where: { 
+                id: req.params.id
+            }
+        });
+        res.status(200).json({ message: 'Usuário deletado com sucesso' });
+    } catch (err) {
+        res.status(500).json({ message: 'Erro ao deletar usuário' });
+    }
+});
+
 router.put('/atualizar-usuario/:id', async (req, res) => {
     try{
         await prisma.user.update({
@@ -94,19 +107,6 @@ router.put('/atualizar-senha/:id', async (req, res) => {
         res.status(200).json({ message: 'Senha atualizada com sucesso' });
     } catch (err) {
         res.status(500).json({ message: 'Erro ao atualizar senha' });
-    }
-});
-
-router.delete('/deletar-usuario/:id', async (req, res) => {
-    try{
-        await prisma.user.delete({
-            where: { 
-                id: req.params.id
-            }
-        });
-        res.status(200).json({ message: 'Usuário deletado com sucesso' });
-    } catch (err) {
-        res.status(500).json({ message: 'Erro ao deletar usuário' });
     }
 });
 

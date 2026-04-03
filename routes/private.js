@@ -15,23 +15,4 @@ router.get('/listar-usuarios', async (req, res) => {
     }
 });
 
-/* router.put('/atualizar-usuario/:id', async (req, res) => {
-    try{
-        await prisma.user.update({
-            where: { 
-                id: req.params.id
-            },
-            data: {
-                name: req.body.name,
-                email: req.body.email,
-                password: req.body.password
-            }
-        });
-        const jsonSucess = JSON.stringify({ message: 'Usuário atualizado com sucesso' });
-        res.status(200).json({ ...req.body, ...JSON.parse(jsonSucess) });
-    } catch (err) {
-        res.status(500).json({ message: 'Erro ao atualizar usuário' });
-    }
-}); */
-
 export default router;
