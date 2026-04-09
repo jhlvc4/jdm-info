@@ -15,7 +15,7 @@ datasource db {
 }
 
 // Colocar parametros corretos no cadastro como por exemplo email not null
-model User {
+model Users {
   id    String  @id @default(auto()) @map("_id") @db.ObjectId
   email String  @unique
   name  String?

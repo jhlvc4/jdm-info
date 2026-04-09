@@ -15,7 +15,7 @@ try {
     const user = req.body;
     const hashedPassword = await bcrypt.hash(user.password, 10); // Documentação bcrypt: https://www.npmjs.com/package/bcrypt#hashing-a-password
     // Remover const userDB, responde o usuário com a senha criptografada, não recomendado
-    const userDB =  await prisma.user.create({
+    const userDB =  await prisma.users.create({
         data: {
             email: user.email,
             name: user.name,
@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Busca usuário no banco de dados
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.users.findUnique({ where: { email } });
     // Verifica se o usuário existe, se não existir retorna erro 404 (Not Found) com mensagem de usuário não encontrado
     if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
 
@@ -60,54 +60,6 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Erro ao fazer login' });
   }
-});
-
-router.put('/atualizar-usuario/:id', async (req, res) => {
-    try{
-        await prisma.user.update({
-            where: { 
-                id: req.params.id
-            },
-            data: {
-                name: req.body.name,
-                email: req.body.email,
-            }
-        });
-        const jsonSucess = JSON.stringify({ message: 'Usuário atualizado com sucesso' });
-        res.status(200).json({ ...req.body, ...JSON.parse(jsonSucess) });
-    } catch (err) {
-        res.status(500).json({ message: 'Erro ao atualizar usuário' });
-    }
-});
-
-router.put('/atualizar-senha/:id', async (req, res) => {
-    try{
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        await prisma.user.update({
-            where: { 
-                id: req.params.id
-            },
-            data: {
-                password: hashedPassword
-            }
-        });
-        res.status(200).json({ message: 'Senha atualizada com sucesso' });
-    } catch (err) {
-        res.status(500).json({ message: 'Erro ao atualizar senha' });
-    }
-});
-
-router.delete('/deletar-usuario/:id', async (req, res) => {
-    try{
-        await prisma.user.delete({
-            where: { 
-                id: req.params.id
-            }
-        });
-        res.status(200).json({ message: 'Usuário deletado com sucesso' });
-    } catch (err) {
-        res.status(500).json({ message: 'Erro ao deletar usuário' });
-    }
 });
 
 export default router;
